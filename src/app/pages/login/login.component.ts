@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import * as firebase from 'firebase';
+import { CookieService } from 'ngx-cookie';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
 import { WindowService } from './window.service';
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   buttonClicked = false;
   
 
-  constructor(private win: WindowService, private toastrService: ToastrService, private router: Router) {}
+  constructor(private win: WindowService, private toastrService: ToastrService, private router: Router, private cookieService: CookieService) {}
 
   ngOnInit() {
     firebase.initializeApp(environment.firebase)
@@ -64,8 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     .confirm(this.verificationCode)
     .then(result => {
       this.user = result.user;
-      console.log('I am logged in')
-      this.toastrService.success('Logged in successfully.')
+      this.cookieService.put('currentUser',this.user.phoneNumber)
       this.router.navigateByUrl('/status')
     })
     .catch(error=>{
