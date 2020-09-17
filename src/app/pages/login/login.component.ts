@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 import * as firebase from 'firebase';
 import { ToastrService } from 'ngx-toastr';
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   buttonClicked = false;
   
 
-  constructor(private win: WindowService, private toastrService: ToastrService) {}
+  constructor(private win: WindowService, private toastrService: ToastrService, private router: Router) {}
 
   ngOnInit() {
     firebase.initializeApp(environment.firebase)
@@ -65,6 +66,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.user = result.user;
       console.log('I am logged in')
       this.toastrService.success('Logged in successfully.')
+      this.router.navigateByUrl('/status')
     })
     .catch(error=>{
       console.log(error, "Incorrect code enetered?")

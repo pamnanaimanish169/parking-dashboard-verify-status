@@ -38,6 +38,15 @@ const routes: Routes =[
   }, {
     path: '**',
     redirectTo: 'dashboard'
+  },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        loadChildren: './components/components.module.ts'
+      }
+    ]
   }
 ];
 
