@@ -57,7 +57,6 @@ const routes: Routes =[
     RouterModule.forRoot(routes,{
       useHash: true
     }),
-    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule
   ],

@@ -24,7 +24,7 @@ export class PhoneNumber {
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
   windowRef: any;
 
@@ -47,19 +47,28 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.windowRef.recaptchaVerifier.render()
   }
 
-  sendLoginCode() {
+  sendLoginCode() {  
     const appVerifier = this.windowRef.recaptchaVerifier;
 
     const num = this.phoneNumber.e164;
 
-    firebase.auth().signInWithPhoneNumber(num, appVerifier)
-    .then(result => {
-      this.windowRef.confirmationResult = result;
-      this.buttonClicked = true;
-    })
-    .catch(error => console.log(error))
-  }
+    console.log('Num', num);
+    console.log('typeof Num', typeof num)
 
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      this.buttonClicked = true;
+      return firebase.auth().signInWithPhoneNumber(num, appVerifier)
+      .then(result => {
+        this.windowRef.confirmationResult = result;
+        this.flipTheCard();
+      })
+      .catch(error => console.log('Error in Signing In' , error))
+    })
+    .catch((error) => {
+      console.log('Error is setting Perisitence', error)
+    })
+  }
   verifyLoginCode() {
     this.windowRef.confirmationResult
     .confirm(this.verificationCode)
@@ -74,7 +83,29 @@ export class LoginComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy() {
+  getValue(event) {
+    console.log(event)
+    console.log(this.phoneNumber)
+    console.log(this.phoneNumber)
+    console.log(this.phoneNumber.e164)
+  }
+
+  flipTheCard() {
+    console.log( document.getElementsByClassName('flip-card') )
+    const flipCard = document.getElementsByClassName('flip-card');
+    const flipCardInner = document.getElementsByClassName('flip-card-inner');
+    const flipCardBack = document.getElementsByClassName('flip-card-back');
+    const flipCardBackInner = document.getElementsByClassName('flip-card-back-inner');
+
+    console.dir(flipCard[0])
+    console.dir(flipCardInner[0])
+    console.log(flipCardBackInner)
+    console.dir(flipCardBackInner[0])
+
+    flipCard[0]['style'].transform = 'rotateY(180deg)';
+    flipCardInner[0]['style'].transform = 'rotateY(180deg)';
+    flipCardBack[0]['style'].transform = 'rotateY(180deg)'
+    flipCardBackInner[0]['style'].transform = 'rotateY(180deg)'
   }
 
 }
