@@ -6,9 +6,11 @@ import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { VendorStatusComponent } from './vendor-status/vendor-status.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 const appRoutes = [
-  { path: 'status', component: VendorStatusComponent}
+  { path: 'status', component: VendorStatusComponent},
+  { path: 'transactions', component: TransactionsComponent}
 ]
 
 @NgModule({
@@ -22,7 +24,8 @@ const appRoutes = [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    VendorStatusComponent
+    VendorStatusComponent,
+    TransactionsComponent
   ],
   exports: [
     FooterComponent,
