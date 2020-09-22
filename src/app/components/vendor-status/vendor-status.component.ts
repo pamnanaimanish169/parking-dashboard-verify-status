@@ -10,11 +10,13 @@ import { ToastrService } from 'ngx-toastr';
 export class VendorStatusComponent implements OnInit {
   result = [];
   todaysCheckIn;
+  todaysCheckOut = 0;
   availableFWCapacity;
   availableTWCapacity;
   occupiedTWCapacity;
   occupiedFWCapacity;
   totalAmt;
+  vendorSignupToday = 0;
 
   constructor(private firestore: AngularFirestore, private toastrService: ToastrService) { }
 
@@ -50,12 +52,18 @@ export class VendorStatusComponent implements OnInit {
         if (element['xf']['nn']['proto']['mapValue']['fields']['entryTimestamp']['timestampValue'].toString().slice(0,10) == new Date().toISOString().slice(0,10)) {
           length = length + 1;
         }
+        if(element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue'] != undefined) {
+          if (element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue'].toString().slice(0,10) == new Date().toISOString().slice(0,10)) {
+            this.todaysCheckOut += 1;
+          }
+        }
       })
       this.todaysCheckIn = length;
+      console.log(this.todaysCheckOut)
     })
   }
 
-  getRevenue() {
+  getRevenue() { 
     this.firestore.collection('parkingTransactions').get().toPromise().then((res) => {
       console.log(res)
       res['docs'].forEach((element, key) => {
@@ -74,6 +82,9 @@ export class VendorStatusComponent implements OnInit {
   getAllVendors() {
     this.firestore.collection('vendors').get().subscribe(res => {
       res['docs'].forEach((element, key) => {
+        if (new Date(parseInt(element['xf']['nn']['proto']['mapValue']['fields']['id']['stringValue'].slice(3,13)) * 1000).toISOString().slice(0,10) == new Date().toISOString().slice(0, 10)) {
+          this.vendorSignupToday += 1;
+        }
         this.result.push(element)
       })
     })

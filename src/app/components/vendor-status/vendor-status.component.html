@@ -11,8 +11,8 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Vendors</h5>
-                        <span class="h2 font-weight-bold mb-0">{{result.length}}</span>
+                        <h5 class="card-title text-uppercase text-muted mb-0">New Signup</h5>
+                        <span class="h2 font-weight-bold mb-0">{{vendorSignupToday}}</span>
                       </div>
                       <div class="col-auto">
                         <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -32,8 +32,10 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Today's Check In</h5>
+                        <h5 class="card-title text-uppercase text-muted mb-0">Check In</h5>
                         <span class="h2 font-weight-bold mb-0">{{todaysCheckIn}}</span>
+                        <br>
+                        <span class="h2 font-weight-bold mb-0">{{todaysCheckOut}}</span>
                       </div>
                       <div class="col-auto">
                         <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -41,10 +43,6 @@
                         </div>
                       </div>
                     </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
-                      <span class="text-nowrap">Since last week</span>
-                    </p>
                   </div>
                 </div>
               </div>
@@ -64,16 +62,12 @@
                         </div>
                       </div>
                     </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                      <span class="text-nowrap">Since yesterday</span>
-                    </p>
                   </div>
                 </div>
               </div>
               <div class="col-xl-3 col-lg-6">
                 <div class="card card-stats mb-4 mb-xl-0">
-                  <div class="card-body">
+                  <div class="card-body"> 
                     <div class="row">
                       <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Occupied</h5>
@@ -87,10 +81,6 @@
                         </div>
                       </div>
                     </div>
-                    <p class="mt-3 mb-0 text-muted text-sm">
-                      <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                      <span class="text-nowrap">Since last month</span>
-                    </p>
                   </div>
                 </div>
               </div>
@@ -135,13 +125,33 @@
                       </td>
                       <td>
                         <span class="badge badge-dot mr-4" *ngIf="item['xf']['nn']['proto']['mapValue']['fields']['isActivated']">
-                          <i class="bg-warning"></i> {{item['xf']['nn']['proto']['mapValue']['fields']['isActivated']['booleanValue']}} 
+                          <span *ngIf="item['xf']['nn']['proto']['mapValue']['fields']['isActivated']['booleanValue'] == true">
+                            <span style="background-color: green;">
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
+                          </span>
+
+                          <span *ngIf="item['xf']['nn']['proto']['mapValue']['fields']['isActivated']['booleanValue'] == false">
+                            <span style="background-color: red;">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
+                          </span>
                         </span>
                       </td>
                       
                       <td>
                         <span class="badge badge-dot mr-4" *ngIf="item['xf']['nn']['proto']['mapValue']['fields']['isKYC']">
-                          <i class="bg-warning"></i> {{item['xf']['nn']['proto']['mapValue']['fields']['isKYC']['booleanValue']}} 
+                          <span *ngIf="item['xf']['nn']['proto']['mapValue']['fields']['isKYC']['booleanValue'] == true">
+                            <span style="background-color: green;">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
+                          </span>
+
+                          <span *ngIf="item['xf']['nn']['proto']['mapValue']['fields']['isKYC']['booleanValue'] == false">
+                            <span style="background-color: red;">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
+                          </span>
                         </span>
                       </td>
                       <td class="text-right">
