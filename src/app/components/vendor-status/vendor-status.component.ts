@@ -88,6 +88,7 @@ export class VendorStatusComponent implements OnInit {
         this.result.push(element)
       })
     })
+    console.log(this.result)
   }
 
   completeKYC(vendor) {
