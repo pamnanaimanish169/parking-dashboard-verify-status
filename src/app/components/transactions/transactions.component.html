@@ -20,20 +20,14 @@
               </div>
               <span>
                   <!-- FROM DATE START -->
-                  <mat-form-field appearance="fill">
-                    <mat-label>Choose a date</mat-label>
-                    <input matInput [matDatepicker]="picker" (dateInput)="addEventFrom('input', $event)" (dateChange)="addEventFrom('change', $event)">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                  <mat-form-field>
+                    <input type="date" matInput [(ngModel)]="fromDate" placeholder="Filter" (change)="getFromDate($event)">
                   </mat-form-field>
                   <!-- FROm DATE END -->
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <!-- To DATE START -->
-                  <mat-form-field appearance="fill">
-                    <mat-label>Choose a date</mat-label>
-                    <input matInput [matDatepicker]="picker2" (dateInput)="addEventTo('input', $event)" (dateChange)="addEventTo('change', $event)">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
+                  <mat-form-field>
+                    <input type="date" matInput [(ngModel)]="toDate" placeholder="Filter" (change)="getToDate($event)">
                   </mat-form-field>
 
                   <button (click)="submit()">Submit</button>

@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 
 const appRoutes = [
@@ -27,7 +28,8 @@ const appRoutes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    RouterModule.forChild(appRoutes)
+    RouterModule.forChild(appRoutes),
+    FormsModule
   ],
   declarations: [
     FooterComponent,

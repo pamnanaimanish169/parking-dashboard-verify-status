@@ -11,6 +11,8 @@ export class TransactionsComponent implements OnInit {
   result = [];
   newFromDate;
   newToDate;
+  fromDate;
+  toDate;
 
   constructor(private firestore: AngularFirestore) { }
 
@@ -45,21 +47,46 @@ export class TransactionsComponent implements OnInit {
     console.log(this.newToDate)
   }
 
+  
+  // table.component.ts (parking-dashboard) line 42 (filterByDate())
   submit() {
-    this.firestore.collection('parkingTransactions').get().toPromise().then((res) => {
+    this.result = [];
+    let start = new Date(this.fromDate.toString());
+    let end = new Date(this.toDate.toString()).toISOString();
+
+    console.log(start)
+    console.log(end)
+
+    let result = this.firestore.collection('parkingTransactions', ref => ref
+    .where('entryTimestamp', '>=', start)
+    )
+
+    console.log(result)
+
+    result.get().subscribe(res => {
       console.log(res)
+      let elementArray = [];
       res['docs'].forEach((element, key) => {
-        if(element['xf']['nn']['proto']['mapValue']['fields']['entryTimestamp']['timestampValue'] != undefined && element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue'] != undefined && element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['nullValue'] != null) {
-          if(new Date(element['xf']['nn']['proto']['mapValue']['fields']['entryTimestamp']['timestampValue']).getTime() > new Date(this.newFromDate).getTime() && new Date(element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue']).getTime() < new Date(this.newToDate).getTime()) {
-            this.result.push(element['xf']['nn']['proto']['mapValue']['fields'])
-          }
+        console.log(element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue'])
+        console.log(end)
+        console.log(element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue'] <= end)
+        if (element['xf']['nn']['proto']['mapValue']['fields']['exitTimestamp']['timestampValue'] <= end) {
+          this.result.push(element['xf']['nn']['proto']['mapValue']['fields'])
         }
       })
-      console.log(this.result)
     })
-    .catch((error) => {
-      console.log(error)
-    })
+
+    console.log(this.result)
+  }
+
+  getFromDate(event) {
+    console.log(event.target.value)
+    this.fromDate = event.target.value;
+  }
+
+  getToDate(event) {
+    console.log(event.target.value)
+    this.toDate = event.target.value;
   }
 
 }
