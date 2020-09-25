@@ -15,6 +15,8 @@ export class TransactionDetailsComponent implements OnInit {
   editButtonClicked = false;
   discount;
   remarks;
+  date;
+  time;
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore, private toastrService:ToastrService) {
     this.route.params.subscribe(param => {
@@ -36,6 +38,7 @@ export class TransactionDetailsComponent implements OnInit {
       console.log(res)
       res['docs'].forEach((element, key) => {
         this.result.push(element['xf']['nn']['proto']['mapValue']['fields'])
+        this.remarks = element['xf']['nn']['proto']['mapValue']['fields']['remarks']['stringValue']
       })
     })
     console.log(this.result)
@@ -44,10 +47,14 @@ export class TransactionDetailsComponent implements OnInit {
   onEdit() {
     const elements = document.getElementsByTagName('input');
     console.dir( elements )
-    for(let i = 0; i < elements.length; i++) {
-      console.dir(elements[i].readOnly)
-      elements[i].readOnly = false;
-    }
+    console.dir(document.getElementById('input-exit-time'))
+    console.dir(document.getElementById('input-exit-date'))
+    console.dir(document.getElementById('input-discount'))
+
+    document.getElementById('input-exit-time')['readOnly'] = false;
+    document.getElementById('input-exit-date')['readOnly'] = false;
+    document.getElementById('input-discount')['readOnly'] = false;
+    
     const textarea = document.getElementsByTagName('textarea');
 
     for(let j = 0; j < textarea.length; j++) {
@@ -56,34 +63,46 @@ export class TransactionDetailsComponent implements OnInit {
   }
 
   onSubmit(transaction) {
-    console.log(this.discount);
-    console.log(this.remarks)
-    console.log(transaction)
+    
+    let exitDate = document.getElementById('input-exit-date')['value'] + 'T' + document.getElementById('input-exit-time')['value'] + 'Z';
+    let discount = parseInt(document.getElementById('input-discount')['value']);
+    let entryDate = transaction['entryTimestamp']['timestampValue'];
+    let newEntryDate = new Date(entryDate);
+    let newExitDate = new Date(exitDate);
+    let updatedAt = transaction['updatedAt']['timestampValue'];
+    let newUpdatedAt = new Date(updatedAt);
+
+    console.log(typeof newExitDate)
+    console.log(typeof newEntryDate)
+    console.log(typeof newUpdatedAt)
+
+    console.log(newExitDate)
+
     this.firestore.collection('parkingTransactions').doc(transaction['id']['stringValue']).set({
-      addOnAmount: transaction['addOnAmount']['integerValue'],
-      discountPercent: this.discount,
+      addOnAmount: parseInt(transaction['addOnAmount']['integerValue']),
+      discountPercent: discount,
       remarks: this.remarks,
-      entryTimestamp: transaction['entryTimestamp']['timestampValue'],
-      exitTimestamp: transaction['exitTimestamp']['timestampValue'],
-      id: transaction['id']['stringValue'],
-      initPayment: transaction['initPayment']['integerValue'],
+      entryTimestamp: newEntryDate,
+      exitTimestamp: newExitDate,
+      id: transaction['id']['stringValue'].toString(),
+      initPayment: parseInt(transaction['initPayment']['integerValue']),
       isFree: transaction['isFree']['booleanValue'],
-      parkingLotId: transaction['parkingLotId']['stringValue'],
-      parkingType: transaction['parkingType']['stringValue'],
-      prevBalanceAmount: transaction['prevBalanceAmount']['integerValue'],
-      safetyCharges: transaction['safetyCharges']['integerValue'],
-      secureOtp: transaction['secureOtp']['stringValue'],
-      totalPayment: transaction['totalPayment']['integerValue'],
-      updatedAt: transaction['updatedAt']['timestampValue'],
-      vehicleMobileNo: transaction['vehicleMobileNo']['stringValue'],
-      vehicleNo: transaction['vehicleNo']['stringValue'],
-      vehicleType: transaction['vehicleType']['stringValue']
+      parkingLotId: transaction['parkingLotId']['stringValue'].toString(),
+      parkingType: transaction['parkingType']['stringValue'].toString(),
+      prevBalanceAmount: parseInt(transaction['prevBalanceAmount']['integerValue']),
+      safetyCharges: parseInt(transaction['safetyCharges']['integerValue']),
+      secureOtp: transaction['secureOtp']['stringValue'].toString(),
+      totalPayment: parseInt(transaction['totalPayment']['integerValue']),
+      updatedAt: newUpdatedAt,
+      vehicleMobileNo: transaction['vehicleMobileNo']['stringValue'].toString(),
+      vehicleNo: transaction['vehicleNo']['stringValue'].toString(),
+      vehicleType: transaction['vehicleType']['stringValue'].toString()
     }).then((res) => {
       console.log('Transaction updated successfully', res)
       this.toastrService.success('Transaction Updated successfully...')
       setTimeout(() => {
         location.reload()
-      }, 3000);
+      }, 1000);
     })
     .catch((error) => {
       console.log('Error in upating transaction', error)
