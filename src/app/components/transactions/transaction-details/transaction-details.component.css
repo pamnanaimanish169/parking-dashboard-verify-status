@@ -2,3 +2,9 @@
     width: 80%;
     float: right;
 }
+
+@media only screen and (min-width:1880px) {
+    .start-div {
+        width: 86.67%;
+    }
+}
