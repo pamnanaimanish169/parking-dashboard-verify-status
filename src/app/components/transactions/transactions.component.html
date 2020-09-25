@@ -45,33 +45,32 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of result">
-                      <th scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            <span class="mb-0 text-sm">{{item['vehicleNo']['stringValue']}} </span>
+                    
+                    <tr *ngFor="let item of result" (click)="goToTransactionDetails(item['id']['stringValue'])">
+                        <th scope="row">
+                          <div class="media align-items-center">
+                            <div class="media-body">
+                              <span class="mb-0 text-sm">{{item['vehicleNo']['stringValue']}} </span>
+                            </div>
                           </div>
-                        </div>
-                      </th>
-                      <td>
-                        <span class="mb-0 text-sm" *ngIf="item['id']">{{item['id']['stringValue']}} </span>
-                      </td>
-                      <td>
-                        <span class="mb-0 text-sm" *ngIf="item['entryTimestamp']">
-                            <span *ngIf="item['entryTimestamp']['timestampValue']">
-                                {{item['entryTimestamp']['timestampValue']}} 
-                            </span>
-                        </span>
-                      </td>
-                      
-                      <td>
-                        <span class="mb-0 text-sm" *ngIf="item['exitTimestamp']">
-                            <span *ngIf="item['exitTimestamp']['timestampValue']">
-                                {{item['exitTimestamp']['timestampValue']}} 
-                            </span>
-                        </span>
-                      </td>
-                      
+                        </th>
+                        <td>
+                          <span class="mb-0 text-sm" *ngIf="item['id']">{{item['id']['stringValue']}} </span>
+                        </td>
+                        <td>
+                          <span class="mb-0 text-sm" *ngIf="item['entryTimestamp']">
+                              <span *ngIf="item['entryTimestamp']['timestampValue']">
+                                  {{item['entryTimestamp']['timestampValue']}} 
+                              </span>
+                          </span>
+                        </td>  
+                        <td>
+                          <span class="mb-0 text-sm" *ngIf="item['exitTimestamp']">
+                              <span *ngIf="item['exitTimestamp']['timestampValue']">
+                                  {{item['exitTimestamp']['timestampValue']}} 
+                              </span>
+                          </span>
+                        </td>
                     </tr>
                   </tbody>
                 </table>

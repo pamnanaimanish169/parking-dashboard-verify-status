@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 
 @Component({
@@ -14,7 +15,7 @@ export class TransactionsComponent implements OnInit {
   fromDate;
   toDate;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllTransactions();
@@ -87,6 +88,11 @@ export class TransactionsComponent implements OnInit {
   getToDate(event) {
     console.log(event.target.value)
     this.toDate = event.target.value;
+  }
+
+  goToTransactionDetails(id) {
+    console.log(id)
+    this.router.navigateByUrl('/transactions-details/'+ id)
   }
 
 }
